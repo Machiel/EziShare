@@ -2,19 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package ezi.packet;
 
 /**
  *
  * @author Elwin
  */
-public class EziPacketRequest {
+public class EziPacketResponse {
 
     private String filename;
     private long partNumber;
     private int partSize;
 
-    public EziPacketRequest(String fileName, long part, int size) {
+    public EziPacketResponse(String fileName, long part, int size) {
         this.filename = fileName;
         this.partNumber = part;
         this.partSize = size;

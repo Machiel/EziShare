@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package ezi.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,11 +24,6 @@ public class EziFileIndexer {
     
     public EziFileIndexer(String path){
         this.path = path;
-        this.packetSize = packSize;
-        this.partSize = partSize;
-        this.partId = partid;
-        this.fileName = filename;
-        initFile();
     }
     
     

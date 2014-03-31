@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package System;
+package ezi.system;
 
-import Connection.Connection;
-import System.EziDownload;
-import Data.EziDistributor;
-import Data.EziFile;
+import ezi.connection.Connection;
+import ezi.system.EziDownload;
+import ezi.packet.EziDistributor;
+import ezi.file.EziFile;
 
 /**
  *

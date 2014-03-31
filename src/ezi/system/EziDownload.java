@@ -1,15 +1,15 @@
-package System;
+package ezi.system;
 
-import Connection.EziPeer;
-import Data.EziFile;
-import Data.EziPacketRequest;
-import Data.EziDataPacket;
-import Data.EziFileIndexer;
+import ezi.connection.EziPeer;
+import ezi.file.EziFile;
+import ezi.packet.EziPacketRequest;
+import ezi.packet.EziDataPacket;
+import ezi.file.EziFileIndexer;
 import java.util.ArrayList;
 
 public class EziDownload {
     //--
-    private EziFile ticket;
+    private EziFile eziFile;
     private ArrayList<EziPeer> peers;
     private ArrayList<EziFileIndexer> parts;
     private int partCounter = 1;
@@ -22,14 +22,14 @@ public class EziDownload {
         this.path = path;
         this.packetSize = packSize;
         this.partSize = partSize;
-        this.ticket = ticket;
+        this.eziFile = ticket;
         parts = new ArrayList<>();
     }
 
     protected void requestNextPart(EziPeer p) {
         partCounter++;
-        parts.add(new EziFileIndexer(partCounter, ticket.getFileName(), path, packetSize, partSize));
-        p.writeObject(new EziPacketRequest(ticket.getFileName(), partCounter, packetSize));
+        parts.add(new EziFileIndexer(partCounter, eziFile.getFileName(), path, packetSize, partSize));
+        p.writeObject(new EziPacketRequest(eziFile.getFileName(), partCounter, packetSize));
     }
 
     public void start() {
@@ -44,8 +44,8 @@ public class EziDownload {
     public void delete() {
     }
 
-    public String getFileName() {
-        return ticket.getFileName();
+    public long getFileHash() {
+        return eziFile.getHash();
     }
 
     public void processFilePacket(EziDataPacket packet, EziPeer p) {

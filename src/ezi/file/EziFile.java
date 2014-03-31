@@ -1,4 +1,4 @@
-package Data;
+package ezi.file;
 
 import java.io.Serializable;
 

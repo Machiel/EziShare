@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Connection;
+package ezi.connection;
 
-import Data.EziDistributor;
+import ezi.packet.EziDistributor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;

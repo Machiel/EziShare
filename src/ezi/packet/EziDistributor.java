@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package ezi.packet;
 
-import System.EziDownload;
-import Connection.EziPeer;
-import System.EziUpload;
+import ezi.system.EziDownload;
+import ezi.connection.EziPeer;
+import ezi.system.EziUpload;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +38,7 @@ public class EziDistributor {
 
     private void routePacket(EziDataPacket packet, EziPeer p) {
         for (EziDownload download : downloads) {
-            if (download.getFileName().equals(packet.getFileName())) {
+            if (download.getFileHash() == (packet.getFileHash())) {
                 download.processFilePacket(packet, p);
                 break;
             }

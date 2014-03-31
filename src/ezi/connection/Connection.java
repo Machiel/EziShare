@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Connection;
+package ezi.connection;
 
-import System.EziUpload;
-import Data.EziDistributor;
+import ezi.system.EziUpload;
+import ezi.packet.EziDistributor;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Data;
+package ezi.packet;
 
 /**
  *
@@ -23,7 +23,7 @@ public class EziPacket {
         this.fileHash = fileHash;
     }
 
-    protected int getOffset() {
+    public int getOffset() {
         return offset;
     }
 

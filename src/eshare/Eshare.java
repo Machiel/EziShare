@@ -4,7 +4,7 @@
  */
 package eshare;
 
-import System.EziShare;
+import ezi.system.EziShare;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

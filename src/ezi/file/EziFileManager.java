@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package ezi.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ public class EziFileManager {
     public EziFileManager(String path, EziFile eziFile){
         initFile(path, eziFile);
         this.writer = new EziFileWriter(eziFile, path, this.file);
-        this.reader = new EziFileWriter(eziFile, path, this.file);
+        this.reader = new EziFileReader(eziFile, path, this.file);
     }
 
     private void initFile(String path, EziFile eziFile) {
