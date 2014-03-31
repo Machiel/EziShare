@@ -1,33 +1,34 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
 
-import java.io.Serializable;
+package Data;
 
 /**
  *
  * @author Elwin
  */
-public class EziPacket implements Serializable {
-
-    private int partId;
-    private String fileName;
-    private byte[] bytes;
-
-    protected EziPacket() {
+public class EziPacket {
+    
+    protected long fileHash;
+    protected int offset;
+    
+    protected long getFileHash() {
+        return fileHash;
+    }
+   
+    protected void setFileHash(long fileHash) {
+        this.fileHash = fileHash;
     }
 
-    public int getPartId() {
-        return partId;
+    protected int getOffset() {
+        return offset;
     }
 
-    protected String getFileName() {
-        return fileName;
+    protected void setOffset(int offset) {
+        this.offset = offset;
     }
-
-    protected byte[] getBytes() {
-        return bytes;
-    }
+    
 }

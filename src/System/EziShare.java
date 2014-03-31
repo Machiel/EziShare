@@ -2,25 +2,27 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package iziShare;
+package System;
 
-import Data.EziPacketProcessor;
+import Connection.Connection;
+import System.EziDownload;
+import Data.EziDistributor;
 import Data.EziFile;
 
 /**
  *
  * @author Elwin
  */
-public class ShareSystem{
+public class EziShare{
     
     private Connection connection = null;
-    private static EziPacketProcessor packetProcessor = null;
+    private static EziDistributor packetProcessor = null;
     private String path = null;
     private int packetSize = 0;
     private int partSize = 0;
     
-    public ShareSystem(String path, int packetSize, int partSize){
-        packetProcessor = new EziPacketProcessor();
+    public EziShare(String path, int packetSize, int partSize){
+        packetProcessor = new EziDistributor();
         this.path = path;
         this.packetSize = packetSize;
         this.partSize = partSize;

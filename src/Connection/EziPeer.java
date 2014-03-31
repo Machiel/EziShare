@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package iziShare;
+package Connection;
 
-import Data.EziPacketProcessor;
+import Data.EziDistributor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -28,7 +28,7 @@ public class EziPeer implements Serializable {
     private ObjectOutputStream objectOutStr;
     private EziPeerListener listener;
 
-    protected EziPeer(Socket socket, EziPacketProcessor processor) {
+    protected EziPeer(Socket socket, EziDistributor processor) {
         this.socket = socket;
         this.listener = new EziPeerListener(this, processor);
         createStreams();
@@ -64,7 +64,7 @@ public class EziPeer implements Serializable {
         return ob;
     }
 
-    protected void writeObject(Object ob){
+    public void writeObject(Object ob){
         try {
             objectOutStr.writeObject(ob);
             objectOutStr.flush();

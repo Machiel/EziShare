@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package iziShare;
+package Connection;
 
-import Data.EziPacketProcessor;
+import System.EziUpload;
+import Data.EziDistributor;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,13 +20,13 @@ import java.util.logging.Logger;
 public final class Connection implements Runnable {
 
     private ServerSocket serverSocket;
-    private EziPacketProcessor processor;
+    private EziDistributor processor;
     private ArrayList<EziPeer> peers;
     private Thread thread;
     private boolean run = true;
     
 
-    protected Connection(EziPacketProcessor processor) {
+    public Connection(EziDistributor processor) {
         this.peers = new ArrayList<>();
         this.processor = processor;
         try {
@@ -35,12 +36,12 @@ public final class Connection implements Runnable {
         }
     }
 
-    protected void stop() {
+    public void stop() {
         run = false;
         thread = null;
     }
 
-    protected void start() {
+    public void start() {
         run = true;
         thread = new Thread(this);
         thread.start();

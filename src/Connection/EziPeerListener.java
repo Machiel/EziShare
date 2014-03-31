@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package iziShare;
+package Connection;
 
-import Data.EziPacketProcessor;
+import Data.EziDistributor;
 
 /**
  *
@@ -14,10 +14,10 @@ public class EziPeerListener implements Runnable {
 
     private EziPeer peer;
     private Thread thread;
-    private EziPacketProcessor processor;
+    private EziDistributor processor;
     private boolean run = true;
 
-    protected EziPeerListener(EziPeer peer, EziPacketProcessor processor) {
+    protected EziPeerListener(EziPeer peer, EziDistributor processor) {
         this.peer = peer;
         this.processor = processor;
     }

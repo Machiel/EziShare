@@ -4,7 +4,7 @@
  */
 package eshare;
 
-import iziShare.ShareSystem;
+import System.EziShare;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -16,6 +16,6 @@ public class Eshare {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
-        ShareSystem ezShare = new ShareSystem("C:/", 10, 1024);
+        EziShare ezShare = new EziShare("C:/", 10, 1024);
     }
 }

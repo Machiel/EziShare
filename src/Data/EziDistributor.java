@@ -4,21 +4,21 @@
  */
 package Data;
 
-import iziShare.EziDownload;
-import iziShare.EziPeer;
-import iziShare.EziUpload;
+import System.EziDownload;
+import Connection.EziPeer;
+import System.EziUpload;
 import java.util.ArrayList;
 
 /**
  *
  * @author Elwin
  */
-public class EziPacketProcessor {
+public class EziDistributor {
 
     private ArrayList<EziDownload> downloads;
     private ArrayList<EziUpload> uploads;
 
-    public EziPacketProcessor() {
+    public EziDistributor() {
         this.downloads = new ArrayList<>();
         this.uploads = new ArrayList<>();
     }
@@ -28,7 +28,7 @@ public class EziPacketProcessor {
 
         switch (classname) {
             case "DataPacket":
-                routeData((EziPacket) object, p);
+                routePacket((EziDataPacket) object, p);
                 break;
             case "DataRequest":
                 routeDataRequest((EziPacketRequest) object, p);
@@ -36,7 +36,7 @@ public class EziPacketProcessor {
         }
     }
 
-    private void routeData(EziPacket packet, EziPeer p) {
+    private void routePacket(EziDataPacket packet, EziPeer p) {
         for (EziDownload download : downloads) {
             if (download.getFileName().equals(packet.getFileName())) {
                 download.processFilePacket(packet, p);
