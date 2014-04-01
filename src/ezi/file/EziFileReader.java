@@ -21,12 +21,10 @@ import java.util.logging.Logger;
  */
 public class EziFileReader {
     
-    private EziFile eziFile;
     private File file;
     private FileInputStream input;
    
-    protected EziFileReader(EziFile eziFile, File file){
-        this.eziFile = eziFile;
+    protected EziFileReader(File file){
         this.file = file;
         initInput();
     }
@@ -46,7 +44,7 @@ public class EziFileReader {
         } catch (IOException ex) {
             Logger.getLogger(EziFileReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new EziDataPacket(this.eziFile, r.getOffset(), bytes);
+        return new EziDataPacket(r.getFileInfo(), r.getOffset(), bytes);
     }
 
     protected void closeInut() {

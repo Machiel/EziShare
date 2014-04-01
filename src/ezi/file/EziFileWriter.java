@@ -19,14 +19,10 @@ import java.util.logging.Logger;
  */
 public class EziFileWriter {
 
-    private EziFile eziFile;
-    private File folder;
     private File file;
     private FileOutputStream output;
 
-    protected EziFileWriter(EziFile eziFile, File folder, File file) {
-        this.eziFile = eziFile;
-        this.folder = folder;
+    protected EziFileWriter(File file) {
         this.file = file;
         initOutput();
     }

@@ -28,8 +28,8 @@ public class EziFileManager {
         this.eziFile = eziFile;
         this.folder = folder;
         initFile();
-        this.writer = new EziFileWriter(eziFile, this.file);
-        this.reader = new EziFileReader(eziFile, this.file);
+        this.writer = new EziFileWriter(this.file);
+        this.reader = new EziFileReader(this.file);
     }
 
     private void initFile() {
@@ -48,6 +48,8 @@ public class EziFileManager {
     }
 
     public void writePacket(EziDataPacket d) {
-        this.writer.writePacket(d);
+        if (d.getFileInfo().equals(eziFile)) {
+            this.writer.writePacket(d);
+        }
     }
 }

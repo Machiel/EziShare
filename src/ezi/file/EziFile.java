@@ -6,11 +6,12 @@ public class EziFile implements Serializable {
 
     private String fileName;
     private long size;
-    private long hash;
+    private String checkSum;
 
-    protected EziFile(String filename, long size, long hash) {
+    protected EziFile(String filename, long size, String checksum) {
         this.fileName = filename;
         this.size = size;
+        this.checkSum = checksum;
     }
 
     public String getFileName() {
@@ -21,11 +22,11 @@ public class EziFile implements Serializable {
         return size;
     }
 
-    public long getHash() {
-        return hash;
+    public String getCheckSum() {
+        return checkSum;
     }
 
-    public void setHash(long hash) {
-        this.hash = hash;
+    public void setCheckSum(String checksum) {
+        this.checkSum = checksum;
     }
 }
