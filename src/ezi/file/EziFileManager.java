@@ -5,9 +5,9 @@
  */
 package ezi.file;
 
+import ezi.packet.EziDataPacket;
+import ezi.packet.EziPacketRequest;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,19 +17,23 @@ import java.util.logging.Logger;
  * @author Elwin
  */
 public class EziFileManager {
-    
+
+    private EziFile eziFile;
+    private File folder;
     private File file;
     private EziFileWriter writer;
     private EziFileReader reader;
-    
-    public EziFileManager(String path, EziFile eziFile){
-        initFile(path, eziFile);
-        this.writer = new EziFileWriter(eziFile, path, this.file);
-        this.reader = new EziFileReader(eziFile, path, this.file);
+
+    public EziFileManager(File folder, EziFile eziFile) {
+        this.eziFile = eziFile;
+        this.folder = folder;
+        initFile();
+        this.writer = new EziFileWriter(eziFile, this.file);
+        this.reader = new EziFileReader(eziFile, this.file);
     }
 
-    private void initFile(String path, EziFile eziFile) {
-        this.file = new File(path + eziFile.getFileName());
+    private void initFile() {
+        this.file = new File(this.folder.getPath() + "\\" + this.eziFile.getFileName());
         if (!this.file.exists()) {
             try {
                 this.file.createNewFile();
@@ -37,5 +41,13 @@ public class EziFileManager {
                 Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public EziDataPacket readPacket(EziPacketRequest r) {
+        return this.reader.readPacket(r);
+    }
+
+    public void writePacket(EziDataPacket d) {
+        this.writer.writePacket(d);
     }
 }

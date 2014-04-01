@@ -5,7 +5,7 @@
 package ezi.connection;
 
 import ezi.system.EziUpload;
-import ezi.packet.EziDistributor;
+import ezi.system.EziDistributor;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

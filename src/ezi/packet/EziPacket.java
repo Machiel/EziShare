@@ -6,29 +6,40 @@
 
 package ezi.packet;
 
+import ezi.file.EziFile;
+
 /**
  *
  * @author Elwin
  */
 public class EziPacket {
     
-    protected long fileHash;
+    protected EziFile fileInfo;
     protected int offset;
-    
-    protected long getFileHash() {
-        return fileHash;
+    protected int byteSize;
+
+    public EziFile getFileInfo() {
+        return fileInfo;
     }
-   
-    protected void setFileHash(long fileHash) {
-        this.fileHash = fileHash;
+
+    public void setFileInfo(EziFile fileInfo) {
+        this.fileInfo = fileInfo;
     }
 
     public int getOffset() {
         return offset;
     }
 
-    protected void setOffset(int offset) {
+    public void setOffset(int offset) {
         this.offset = offset;
+    }
+
+    public int getByteSize() {
+        return byteSize;
+    }
+
+    public void setByteSize(int byteSize) {
+        this.byteSize = byteSize;
     }
     
 }

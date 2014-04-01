@@ -6,9 +6,12 @@
 
 package ezi.file;
 
+import ezi.packet.EziDataPacket;
+import ezi.packet.EziPacketRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,13 +22,11 @@ import java.util.logging.Logger;
 public class EziFileReader {
     
     private EziFile eziFile;
-    private String path;
     private File file;
     private FileInputStream input;
    
-    protected EziFileReader(EziFile eziFile, String path, File file){
+    protected EziFileReader(EziFile eziFile, File file){
         this.eziFile = eziFile;
-        this.path = path;
         this.file = file;
         initInput();
     }
@@ -34,6 +35,24 @@ public class EziFileReader {
         try {
             this.input = new FileInputStream(this.file);
         } catch (FileNotFoundException ex) {
+            Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    protected EziDataPacket readPacket(EziPacketRequest r) {
+        byte[] bytes = null;
+        try {
+            input.read(bytes , r.getOffset(), r.getByteSize());
+        } catch (IOException ex) {
+            Logger.getLogger(EziFileReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new EziDataPacket(this.eziFile, r.getOffset(), bytes);
+    }
+
+    protected void closeInut() {
+        try {
+            this.input.close();
+        } catch (IOException ex) {
             Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

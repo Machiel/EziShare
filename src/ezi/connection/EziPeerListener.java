@@ -4,7 +4,7 @@
  */
 package ezi.connection;
 
-import ezi.packet.EziDistributor;
+import ezi.system.EziDistributor;
 
 /**
  *

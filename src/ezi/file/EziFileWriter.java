@@ -20,13 +20,13 @@ import java.util.logging.Logger;
 public class EziFileWriter {
 
     private EziFile eziFile;
-    private String path;
+    private File folder;
     private File file;
     private FileOutputStream output;
 
-    protected EziFileWriter(EziFile eziFile, String path, File file) {
+    protected EziFileWriter(EziFile eziFile, File folder, File file) {
         this.eziFile = eziFile;
-        this.path = path;
+        this.folder = folder;
         this.file = file;
         initOutput();
     }
@@ -41,15 +41,14 @@ public class EziFileWriter {
 
     protected void writePacket(EziDataPacket p) {
         try {
-            output.write(p.getBytes(), p.getOffset(), p.getSize());
+            output.write(p.getBytes(), p.getOffset(), p.getByteSize());
             output.flush();
         } catch (IOException ex) {
             Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        updateProgress();
     }
 
-    protected void updateProgress() {
+    protected void closeOutput() {
         try {
             output.close();
         } catch (IOException ex) {

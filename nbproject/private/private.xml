@@ -3,7 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/build.xml</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/connection/ConnectionListener.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/connection/Connection.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/packet/EziPacketResponse.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/eshare/Eshare.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/file/EziFileManager.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/connection/Server.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/file/EziFileReader.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/file/EziFile.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/connection/EziPeer.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/connection/EziPeerListener.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/system/EziDownload.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/system/EziShare.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/connection/Client.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/packet/EziDataPacket.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/packet/EziDistributor.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/file/EziFileWriter.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/packet/EziPacket.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/file/EziFileIndexer.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/system/EziUpload.java</file>
+            <file>file:/C:/Users/Elwin/Dropbox/Pc%20backup%2029-03-2012/NetBeansProjects/Eshare/src/ezi/packet/EziPacketRequest.java</file>
         </group>
     </open-files>
 </project-private>

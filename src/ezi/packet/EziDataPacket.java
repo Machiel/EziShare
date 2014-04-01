@@ -4,6 +4,7 @@
  */
 package ezi.packet;
 
+import ezi.file.EziFile;
 import java.io.Serializable;
 
 /**
@@ -14,9 +15,9 @@ public class EziDataPacket extends EziPacket implements Serializable {
     
     private byte[] bytes;
 
-    protected EziDataPacket(long fileHash, int offset, byte[] bytes) 
+    public EziDataPacket(EziFile fileInfo, int offset, byte[] bytes) 
     {
-        this.fileHash = fileHash;
+        this.fileInfo = fileInfo;
         this.offset = offset;
         this.bytes = bytes;
     }
@@ -25,7 +26,8 @@ public class EziDataPacket extends EziPacket implements Serializable {
         return bytes;
     }
     
-    public int getSize(){
+    @Override
+    public int getByteSize(){
         return this.bytes.length;
     }
     

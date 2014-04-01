@@ -4,31 +4,30 @@
  */
 package ezi.packet;
 
+import ezi.file.EziFile;
+
 /**
  *
  * @author Elwin
  */
-public class EziPacketResponse {
+public class EziPacketResponse extends EziPacket{
 
-    private String filename;
-    private long partNumber;
-    private int partSize;
-
-    public EziPacketResponse(String fileName, long part, int size) {
-        this.filename = fileName;
-        this.partNumber = part;
-        this.partSize = size;
+    public enum Response{INCOMPLETE,FILENOTFOUND};
+    private Response response; 
+    
+    public EziPacketResponse(EziFile fileInfo, int offSet, int byteSize, Response r) {
+        this.fileInfo = fileInfo;
+        this.offset = offSet;
+        this.byteSize = byteSize;
+        this.response = r;
+    }
+    
+    public Response getResponse() {
+        return response;
     }
 
-    protected String getFilename() {
-        return filename;
+    public void setResponse(Response response) {
+        this.response = response;
     }
 
-    protected long getPartNumber() {
-        return partNumber;
-    }
-
-    protected int getPartSize() {
-        return partSize;
-    }
 }

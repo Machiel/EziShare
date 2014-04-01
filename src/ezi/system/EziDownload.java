@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class EziDownload {
     //--
-    private EziFile eziFile;
+    protected EziFile eziFile;
     private ArrayList<EziPeer> peers;
     private ArrayList<EziFileIndexer> parts;
     private int partCounter = 1;
@@ -28,8 +28,8 @@ public class EziDownload {
 
     protected void requestNextPart(EziPeer p) {
         partCounter++;
-        parts.add(new EziFileIndexer(partCounter, eziFile.getFileName(), path, packetSize, partSize));
-        p.writeObject(new EziPacketRequest(eziFile.getFileName(), partCounter, packetSize));
+        //parts.add(new EziFileIndexer(partCounter, getEziFile().getFileName(), path, packetSize, partSize));
+       // p.writeObject(new EziPacketRequest(getEziFile().getFileName(), partCounter, packetSize));
     }
 
     public void start() {
@@ -43,22 +43,28 @@ public class EziDownload {
 
     public void delete() {
     }
-
-    public long getFileHash() {
-        return eziFile.getHash();
-    }
+    
+    
 
     public void processFilePacket(EziDataPacket packet, EziPeer p) {
         for (EziFileIndexer part : parts) {
-            if (part.getPartId() == packet.getPartId()) {
-                part.processPacket(packet);
-                if (part.isDone()) {
-                    part = null;
-                    parts.remove(part);
-                    requestNextPart(p);
-                }
-                break;
-            }
+          //  if (part.getPartId() == packet.getPartId()) {
+          //      part.processPacket(packet);
+           //     if (part.isDone()) {
+           //         part = null;
+          //          parts.remove(part);
+           //         requestNextPart(p);
+           //     }
+          //      break;
+          //  }
         }
+    }
+
+    public EziFile getEziFile() {
+        return eziFile;
+    }
+
+    public void setEziFile(EziFile eziFile) {
+        this.eziFile = eziFile;
     }
 }
