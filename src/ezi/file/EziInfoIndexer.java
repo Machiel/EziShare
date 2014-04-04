@@ -32,10 +32,11 @@ public class EziInfoIndexer {
         this.folder = folder;
         this.eziFolder = eziFolder;
         this.localFiles = new ArrayList<>();
+        long start_time = System.currentTimeMillis();
         indexFolder(folder);
-        for(EziInfo file : localFiles){
-            System.out.println(file.getFirstFile());
-            System.out.println(file.getNumberOfLocations());
+        System.out.println("It took : "+(System.currentTimeMillis()-start_time)+" miliseconds");
+        for(EziInfo info : localFiles){
+            System.out.println(info.getNumberOfLocations());
         }
     }
 
@@ -46,16 +47,18 @@ public class EziInfoIndexer {
             } else {
                 if (!file.getName().endsWith(".ezi")) {
                     boolean exists = false;
-                    String checkSum = createCheckSum(file);
+                    String checkSum = createFastCheckSum(file);
+                    System.out.println(file.getName());
                     for (EziInfo eziInfo : this.localFiles) {
-                        if(eziInfo.getCheckSum().equals(checkSum)){
+                        if (eziInfo.getFastCheckSum().equals(checkSum)) {
                             eziInfo.addFile(file);
                             updateEziFile(eziInfo);
                             exists = true;
                             break;
                         }
                     }
-                    if(!exists){
+                    if (!exists) {
+                        createEziFile(file, checkSum);
                         EziInfo eziFile = fetchEziForFile(file, checkSum);
                         this.localFiles.add(eziFile);
                     }
@@ -69,28 +72,38 @@ public class EziInfoIndexer {
     }
 
     private EziInfo fetchEziForFile(File file, String checkSum) {
+        boolean found = false;
         EziInfo eziInfo = null;
         File eziFile = new File(getEziUri(checkSum));
 
         if (!eziFile.exists()) {
             createEziFile(file, checkSum);
+        }else{
+            found = true;
         }
 
+        if(!found){
+            System.out.println("not found!");
+        }
+        
         eziInfo = readEziFile(checkSum);
         return eziInfo;
     }
 
-    private String createCheckSum(File file) {
+    private String createFastCheckSum(File file) {
+
         String checksum = null;
         try {
             FileInputStream fis = new FileInputStream(file);
             MessageDigest md = MessageDigest.getInstance("MD5");
-
             //Using MessageDigest update() method to provide input
-            byte[] buffer = new byte[8192];
+            byte[] buffer = new byte[4096];
             int numOfBytesRead;
+            long step = 0;
             while ((numOfBytesRead = fis.read(buffer)) > 0) {
+                fis.skip(step * 1024);
                 md.update(buffer, 0, numOfBytesRead);
+                step++;
             }
             byte[] hash = md.digest();
             checksum = new BigInteger(1, hash).toString(16); //don't use this, truncates leading zero
@@ -121,7 +134,7 @@ public class EziInfoIndexer {
 
     private void updateEziFile(EziInfo eziFile) {
         FileOutputStream fileOutput = null;
-        File writeFile = new File(getEziUri(eziFile.getCheckSum()));
+        File writeFile = new File(getEziUri(eziFile.getFastCheckSum()));
         try {
             fileOutput = new FileOutputStream(writeFile);
             ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
