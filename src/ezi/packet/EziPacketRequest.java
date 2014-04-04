@@ -4,7 +4,7 @@
  */
 package ezi.packet;
 
-import ezi.file.EziFile;
+import ezi.file.EziInfo;
 
 /**
  *
@@ -12,7 +12,7 @@ import ezi.file.EziFile;
  */
 public class EziPacketRequest extends EziPacket{
 
-    public EziPacketRequest(EziFile fileInfo, int offSet, int byteSize) {
+    public EziPacketRequest(EziInfo fileInfo, int offSet, int byteSize) {
         this.fileInfo = fileInfo;
         this.offset = offSet;
         this.byteSize = byteSize;

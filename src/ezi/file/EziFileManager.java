@@ -18,13 +18,13 @@ import java.util.logging.Logger;
  */
 public class EziFileManager {
 
-    private EziFile eziFile;
+    private EziInfo eziFile;
     private File folder;
     private File file;
     private EziFileWriter writer;
     private EziFileReader reader;
 
-    public EziFileManager(File folder, EziFile eziFile) {
+    public EziFileManager(File folder, EziInfo eziFile) {
         this.eziFile = eziFile;
         this.folder = folder;
         initFile();
@@ -32,13 +32,15 @@ public class EziFileManager {
         this.reader = new EziFileReader(this.file);
     }
 
+    
+    //Need to be dynamic. Read existing folder and write to own
     private void initFile() {
-        this.file = new File(this.folder.getPath() + "\\" + this.eziFile.getFileName());
+        this.file = eziFile.getFirstFile();
         if (!this.file.exists()) {
             try {
                 this.file.createNewFile();
             } catch (IOException ex) {
-                Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

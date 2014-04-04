@@ -16,6 +16,6 @@ public class Eshare {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
-     EziSystem system = new EziSystem("C:\\testSpace", 1024);
+     EziSystem system = new EziSystem("C:\\Users\\Elwin\\Downloads\\GrabIt Downloads", "C:\\testSpace\\ezis", 1024);
     }
 }

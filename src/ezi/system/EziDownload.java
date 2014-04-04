@@ -1,29 +1,27 @@
 package ezi.system;
 
 import ezi.connection.EziPeer;
-import ezi.file.EziFile;
+import ezi.file.EziInfo;
 import ezi.packet.EziPacketRequest;
 import ezi.packet.EziDataPacket;
-import ezi.file.EziFileIndexer;
+import ezi.file.EziInfoIndexer;
 import java.util.ArrayList;
 
 public class EziDownload {
     //--
-    protected EziFile eziFile;
+    protected EziInfo eziFile;
     private ArrayList<EziPeer> peers;
-    private ArrayList<EziFileIndexer> parts;
     private int partCounter = 1;
     //--
     private String path;
     private int packetSize;
     private int partSize;
 
-    public EziDownload(EziFile ticket, String path, int packSize, int partSize) {
+    public EziDownload(EziInfo ticket, String path, int packSize, int partSize) {
         this.path = path;
         this.packetSize = packSize;
         this.partSize = partSize;
         this.eziFile = ticket;
-        parts = new ArrayList<>();
     }
 
     protected void requestNextPart(EziPeer p) {
@@ -47,24 +45,14 @@ public class EziDownload {
     
 
     public void processFilePacket(EziDataPacket packet, EziPeer p) {
-        for (EziFileIndexer part : parts) {
-          //  if (part.getPartId() == packet.getPartId()) {
-          //      part.processPacket(packet);
-           //     if (part.isDone()) {
-           //         part = null;
-          //          parts.remove(part);
-           //         requestNextPart(p);
-           //     }
-          //      break;
-          //  }
-        }
+        
     }
 
-    public EziFile getEziFile() {
+    public EziInfo getEziFile() {
         return eziFile;
     }
 
-    public void setEziFile(EziFile eziFile) {
+    public void setEziFile(EziInfo eziFile) {
         this.eziFile = eziFile;
     }
 }

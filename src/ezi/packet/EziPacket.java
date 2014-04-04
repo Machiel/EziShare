@@ -6,7 +6,7 @@
 
 package ezi.packet;
 
-import ezi.file.EziFile;
+import ezi.file.EziInfo;
 
 /**
  *
@@ -14,15 +14,15 @@ import ezi.file.EziFile;
  */
 public class EziPacket {
     
-    protected EziFile fileInfo;
+    protected EziInfo fileInfo;
     protected int offset;
     protected int byteSize;
 
-    public EziFile getFileInfo() {
+    public EziInfo getFileInfo() {
         return fileInfo;
     }
 
-    public void setFileInfo(EziFile fileInfo) {
+    public void setFileInfo(EziInfo fileInfo) {
         this.fileInfo = fileInfo;
     }
 

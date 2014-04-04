@@ -31,7 +31,7 @@ public class EziFileWriter {
         try {
             this.output = new FileOutputStream(this.file);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -40,7 +40,7 @@ public class EziFileWriter {
             output.write(p.getBytes(), p.getOffset(), p.getByteSize());
             output.flush();
         } catch (IOException ex) {
-            Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -48,7 +48,7 @@ public class EziFileWriter {
         try {
             output.close();
         } catch (IOException ex) {
-            Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -4,7 +4,7 @@
  */
 package ezi.packet;
 
-import ezi.file.EziFile;
+import ezi.file.EziInfo;
 
 /**
  *
@@ -15,7 +15,7 @@ public class EziPacketResponse extends EziPacket{
     public enum Response{INCOMPLETE,FILENOTFOUND};
     private Response response; 
     
-    public EziPacketResponse(EziFile fileInfo, int offSet, int byteSize, Response r) {
+    public EziPacketResponse(EziInfo fileInfo, int offSet, int byteSize, Response r) {
         this.fileInfo = fileInfo;
         this.offset = offSet;
         this.byteSize = byteSize;

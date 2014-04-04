@@ -4,7 +4,7 @@
  */
 package ezi.system;
 
-import ezi.file.EziFile;
+import ezi.file.EziInfo;
 
 /**
  *
@@ -12,7 +12,7 @@ import ezi.file.EziFile;
  */
 public class EziUpload {
 
-    private EziFile fileInfo;
+    private EziInfo fileInfo;
 
     protected EziUpload() {
         

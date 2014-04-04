@@ -33,7 +33,7 @@ public class EziFileReader {
         try {
             this.input = new FileInputStream(this.file);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -51,7 +51,7 @@ public class EziFileReader {
         try {
             this.input.close();
         } catch (IOException ex) {
-            Logger.getLogger(EziFileIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

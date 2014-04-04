@@ -6,8 +6,8 @@ package ezi.system;
 
 import ezi.connection.Connection;
 import ezi.system.EziDownload;
-import ezi.file.EziFile;
-import ezi.file.EziFileIndexer;
+import ezi.file.EziInfo;
+import ezi.file.EziInfoIndexer;
 import java.io.File;
 
 /**
@@ -21,12 +21,12 @@ public class EziSystem{
     private String path = null;
     private int packetSize = 0;
     
-    public EziSystem(String path, int packetSize){
+    public EziSystem(String path, String eziPath, int packetSize){
         //packetProcessor = new EziDistributor();
         //this.path = path;
        // this.packetSize = packetSize;
         //openConnections();;
-        EziFileIndexer indexer = new EziFileIndexer(new File(path));
+        EziInfoIndexer indexer = new EziInfoIndexer(new File(path), new File(eziPath));
     }
     
     //initialize new Connection
