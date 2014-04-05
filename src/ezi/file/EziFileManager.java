@@ -19,14 +19,12 @@ import java.util.logging.Logger;
 public class EziFileManager {
 
     private EziInfo eziFile;
-    private File folder;
     private File file;
     private EziFileWriter writer;
     private EziFileReader reader;
 
-    public EziFileManager(File folder, EziInfo eziFile) {
+    public EziFileManager(EziInfo eziFile) {
         this.eziFile = eziFile;
-        this.folder = folder;
         initFile();
         this.writer = new EziFileWriter(this.file);
         this.reader = new EziFileReader(this.file);
@@ -50,7 +48,7 @@ public class EziFileManager {
     }
 
     public void writePacket(EziDataPacket d) {
-        if (d.getFileInfo().equals(eziFile)) {
+        if (d.getFileInfo().getFullCheckSum().equals(eziFile.getFullCheckSum())) {
             this.writer.writePacket(d);
         }
     }
