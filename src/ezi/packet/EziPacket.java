@@ -7,30 +7,24 @@
 package ezi.packet;
 
 import ezi.file.EziInfo;
+import java.io.Serializable;
 
 /**
  *
  * @author Elwin
  */
-public class EziPacket {
+public class EziPacket implements Serializable{
     
-    protected EziInfo fileInfo;
-    protected int offset;
+    protected String id;
+    protected String checkSum;
+    protected long offset;
     protected int byteSize;
 
-    public EziInfo getFileInfo() {
-        return fileInfo;
-    }
-
-    public void setFileInfo(EziInfo fileInfo) {
-        this.fileInfo = fileInfo;
-    }
-
-    public int getOffset() {
+    public long getOffset() {
         return offset;
     }
 
-    public void setOffset(int offset) {
+    public void setOffset(long offset) {
         this.offset = offset;
     }
 
@@ -40,6 +34,22 @@ public class EziPacket {
 
     public void setByteSize(int byteSize) {
         this.byteSize = byteSize;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCheckSum() {
+        return checkSum;
+    }
+
+    public void setCheckSum(String checkSum) {
+        this.checkSum = checkSum;
     }
     
 }

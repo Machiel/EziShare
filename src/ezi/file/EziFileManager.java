@@ -18,22 +18,26 @@ import java.util.logging.Logger;
  */
 public class EziFileManager {
 
-    private EziInfo eziFile;
+    private String fileName;
+    private String filePath;
+    private String checkSum;
+    private long fileSize;
     private File file;
     private EziFileWriter writer;
     private EziFileReader reader;
 
-    public EziFileManager(EziInfo eziFile) {
-        this.eziFile = eziFile;
-        initFile();
-        this.writer = new EziFileWriter(this.file);
+    public EziFileManager(String filePath, String fileName, long fileSize, String checkSum) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+        this.checkSum = checkSum;
+        initFile(filePath, fileName);
+        this.writer = new EziFileWriter(this.file, fileSize);
         this.reader = new EziFileReader(this.file);
     }
 
-    
-    //Need to be dynamic. Read existing folder and write to own
-    private void initFile() {
-        this.file = eziFile.getFirstFile();
+    private void initFile(String filePath, String fileName) {
+        this.file = new File(filePath+"\\"+fileName);
         if (!this.file.exists()) {
             try {
                 this.file.createNewFile();
@@ -48,7 +52,7 @@ public class EziFileManager {
     }
 
     public void writePacket(EziDataPacket d) {
-        if (d.getFileInfo().getFullCheckSum().equals(eziFile.getFullCheckSum())) {
+        if (d.getCheckSum().equals(checkSum)) {
             this.writer.writePacket(d);
         }
     }

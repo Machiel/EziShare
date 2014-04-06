@@ -24,22 +24,26 @@ import java.util.logging.Logger;
  */
 public class EziInfoIndexer {
 
-    private File filesFolder;
-    private File eziFolder;
+    private String filesFolder;
+    private String eziFolder;
     private ArrayList<EziInfo> eziFiles;
 
-    public EziInfoIndexer(File filesFolder, File eziFolder) {
+    public EziInfoIndexer(String filesFolder, String eziFolder) {
         this.filesFolder = filesFolder;
         this.eziFolder = eziFolder;
-        this.eziFiles = getEziInfoFiles(eziFolder);
-        //this.eziFiles = indexFolder(filesFolder, eziFolder, new ArrayList<EziInfo>());
+        //this.eziFiles = getEziInfoFiles(eziFolder);
+        this.eziFiles = indexFolder(new File(filesFolder), eziFolder, new ArrayList<EziInfo>());
     }
+    
+    public ArrayList<EziInfo> getEziInfoList(){
+        return this.eziFiles;
+    } 
 
     private ArrayList<EziInfo> getEziInfoFiles(File eziFolder) {
         ArrayList<EziInfo> eziFiles = new ArrayList<>();
         for (File eziFile : eziFolder.listFiles()) {
             if (eziFile.getName().endsWith(".ezi")) {
-                EziInfo eziInfo = readEziInfoFile(eziFolder, eziFile.getName().replace(".ezi", ""));
+                EziInfo eziInfo = readEziInfoFile(eziFile);
                 if (eziInfo != null) {
                     eziFiles.add(eziInfo);
                 }
@@ -48,9 +52,9 @@ public class EziInfoIndexer {
         return eziFiles;
     }
 
-    private ArrayList<EziInfo> indexFolder(File folder, File eziFolder, ArrayList<EziInfo> eziFiles) {
+    private ArrayList<EziInfo> indexFolder(File filesFolder, String eziFolder, ArrayList<EziInfo> eziFiles) {
         try {
-            for (File file : folder.listFiles()) {
+            for (File file : filesFolder.listFiles()) {
                 if (file.isDirectory()) {
                     eziFiles = indexFolder(file, eziFolder, eziFiles);
                 } else {
@@ -58,7 +62,7 @@ public class EziInfoIndexer {
                         boolean existsInList = false;
                         String eziId = generateEziId(file);
                         for (EziInfo eziInfo : eziFiles) {
-                            if (eziInfo.getFastCheckSum().equals(eziId)) {
+                            if (eziInfo.getEziId().equals(eziId)) {
                                 String originalChecksum = eziInfo.generateCheckSum();
                                 EziInfo tempEziInfo = new EziInfo(file.length(), eziId, file);
                                 String newFileChecksum = tempEziInfo.generateCheckSum();
@@ -88,8 +92,8 @@ public class EziInfoIndexer {
         return eziFiles;
     }
 
-    private String getEziUri(File eziLocation, String eziId) {
-        return eziLocation.getPath() + "\\" + eziId + ".ezi";
+    private String getEziUri(String eziFolder, String eziId) {
+        return eziFolder + "\\" + eziId + ".ezi";
     }
 
     private String generateEziId(File file) {
@@ -119,10 +123,10 @@ public class EziInfoIndexer {
         return eziId;
     }
 
-    private EziInfo createEziInfoFile(File file, File eziLocation, String eziId) {
+    private EziInfo createEziInfoFile(File file, String eziFolder, String eziId) {
         FileOutputStream fileOutput = null;
         EziInfo eziInfo = new EziInfo(file.length(), eziId, file);
-        File eziFile = new File(getEziUri(eziLocation, eziId));
+        File eziFile = new File(getEziUri(eziFolder, eziId));
         try {
             fileOutput = new FileOutputStream(eziFile);
             ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
@@ -137,10 +141,9 @@ public class EziInfoIndexer {
         return eziInfo;
     }
 
-    private EziInfo readEziInfoFile(File eziLocation, String eziId) {
+    private EziInfo readEziInfoFile(File eziFile) {
         FileInputStream fileInput = null;
         EziInfo eziInfo = null;
-        File eziFile = new File(getEziUri(eziLocation, eziId));
         try {
             fileInput = new FileInputStream(eziFile);
             ObjectInputStream objectInput = new ObjectInputStream(fileInput);
@@ -152,7 +155,7 @@ public class EziInfoIndexer {
             eziInfo.checkFiles();
 
             if ((eziInfo.getNumberOfFiles() != 0) && (numOfFiles != eziInfo.getNumberOfFiles())) {
-                updateEziInfoFile(eziLocation, eziInfo);
+                updateEziInfoFile(eziFile.getPath(), eziInfo);
             }
             if (eziInfo.getNumberOfFiles() == 0) {
                 eziFile.delete();
@@ -164,9 +167,9 @@ public class EziInfoIndexer {
         return eziInfo;
     }
 
-    private void updateEziInfoFile(File eziLocation, EziInfo eziInfo) {
+    private void updateEziInfoFile(String eziFolder, EziInfo eziInfo) {
         FileOutputStream fileOutput = null;
-        File writeFile = new File(getEziUri(eziLocation, eziInfo.getFastCheckSum()));
+        File writeFile = new File(getEziUri(eziFolder, eziInfo.getEziId()));
         try {
             fileOutput = new FileOutputStream(writeFile);
             ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);

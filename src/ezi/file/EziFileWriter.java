@@ -6,10 +6,12 @@
 package ezi.file;
 
 import ezi.packet.EziDataPacket;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,25 +22,28 @@ import java.util.logging.Logger;
 public class EziFileWriter {
 
     private File file;
-    private FileOutputStream output;
+    private RandomAccessFile output;
 
-    protected EziFileWriter(File file) {
+    protected EziFileWriter(File file, long size) {
         this.file = file;
-        initOutput();
+        initOutput(size);
     }
 
-    private void initOutput() {
+    private void initOutput(long size) {
         try {
-            this.output = new FileOutputStream(this.file);
+            this.output = new RandomAccessFile(this.file, "rw");
+            this.output.setLength(size);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(EziFileWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     protected void writePacket(EziDataPacket p) {
         try {
-            output.write(p.getBytes(), p.getOffset(), p.getByteSize());
-            output.flush();
+            output.seek(p.getOffset());
+            output.write(p.getBytes(), 0, p.getByteSize());
         } catch (IOException ex) {
             Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }

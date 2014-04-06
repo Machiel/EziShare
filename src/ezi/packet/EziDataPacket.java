@@ -4,7 +4,6 @@
  */
 package ezi.packet;
 
-import ezi.file.EziInfo;
 import java.io.Serializable;
 
 /**
@@ -12,23 +11,18 @@ import java.io.Serializable;
  * @author Elwin
  */
 public class EziDataPacket extends EziPacket implements Serializable {
-    
+
     private byte[] bytes;
 
-    public EziDataPacket(EziInfo fileInfo, int offset, byte[] bytes) 
-    {
-        this.fileInfo = fileInfo;
+    public EziDataPacket(String id, String checkSum, long offset, byte[] bytes, int byteSize) {
+        this.id = id;
+        this.checkSum = checkSum;
         this.offset = offset;
         this.bytes = bytes;
+        this.byteSize = byteSize;
     }
-    
+
     public byte[] getBytes() {
         return bytes;
     }
-    
-    @Override
-    public int getByteSize(){
-        return this.bytes.length;
-    }
-    
 }

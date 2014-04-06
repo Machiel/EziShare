@@ -14,70 +14,70 @@ import java.util.logging.Logger;
 
 public class EziInfo implements Serializable {
     
-    private long size;
-    private String fastCheckSum;
-    private String fullCheckSum;
-    private ArrayList<File> localFiles;
+    private long fileSize;
+    private String eziId;
+    private String checkSum = "";
+    private ArrayList<File> files;
 
-    protected EziInfo(long size, String checksum,File file) {
-        this.size = size;
-        this.fastCheckSum = checksum;
-        this.localFiles = new ArrayList<>();
-        this.localFiles.add(file);
+    protected EziInfo(long size, String eziId,File file) {
+        this.fileSize = size;
+        this.eziId = eziId;
+        this.files = new ArrayList<>();
+        this.files.add(file);
     }
     
     protected void checkFiles(){
-        ArrayList<File> files = new ArrayList<>(getLocalFiles());
+        ArrayList<File> files = new ArrayList<>(getFiles());
         for(File file : files){
             if(!file.exists()){
                 removeFile(file);
             }
         }
     }
+    
+    public String getFileName(){
+        return getFirstFile().getName();
+    }
 
-    protected long getSize() {
-        return size;
+    public long getFileSize() {
+        return fileSize;
     }
     
-    protected String getFastCheckSum() {
-        return fastCheckSum;
+    public String getEziId() {
+        return eziId;
     }
     
     protected void addFile(File file){
         boolean exists = false;
-        for(File tempfile : getLocalFiles()){
+        for(File tempfile : getFiles()){
             if(tempfile.equals(file)){
                 exists = true;
                 break;
             }
         }
         if(!exists){
-                getLocalFiles().add(file);
+                getFiles().add(file);
         }
     }
     
     protected void removeFile(File file){
-        this.localFiles.remove(file);
+        this.files.remove(file);
     }
     
     protected File getFirstFile(){
-        File file = getLocalFiles().get(0);
+        File file = getFiles().get(0);
         return file;
     }
     
     protected int getNumberOfFiles(){
-        return getLocalFiles().size();
-    }
-
-    protected boolean isFullCheckSumEmpty(){
-        return fullCheckSum.isEmpty();
+        return getFiles().size();
     }
     
-    protected String getFullCheckSum() {
-        return fullCheckSum;
+    public String getCheckSum() {
+        return checkSum;
     }
 
-    protected String generateCheckSum() {
+    public String generateCheckSum() {
         File file = getFirstFile();
         String checkSum = null;
         try {
@@ -98,11 +98,11 @@ public class EziInfo implements Serializable {
             Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        this.fullCheckSum = checkSum;
+        this.checkSum = checkSum;
         return checkSum;
     }
 
-    protected ArrayList<File> getLocalFiles() {
-        return localFiles;
+    protected ArrayList<File> getFiles() {
+        return files;
     }
 }

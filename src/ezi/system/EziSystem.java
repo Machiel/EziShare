@@ -9,6 +9,7 @@ import ezi.system.EziDownload;
 import ezi.file.EziInfo;
 import ezi.file.EziInfoIndexer;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,7 +18,8 @@ import java.io.File;
 public class EziSystem{
     
     private Connection connection = null;
-    private static EziDistributor packetProcessor = null;
+    private EziDistributor packetProcessor = null;
+    private EziInfoIndexer indexer = null;
     private String path = null;
     private int packetSize = 0;
     
@@ -26,13 +28,17 @@ public class EziSystem{
         //this.path = path;
        // this.packetSize = packetSize;
         //openConnections();;
-        EziInfoIndexer indexer = new EziInfoIndexer(new File(path), new File(eziPath));
+        //indexer = new EziInfoIndexer(new File(path), new File(eziPath));
     }
     
     //initialize new Connection
     private void openConnections(){
         connection = new Connection(packetProcessor);
         connection.start();
+    }
+    
+    public ArrayList<EziInfo> getLocalEziFiles(){
+        return indexer.getEziInfoList();
     }
     
     //public EziDownload download(EziFile info){
