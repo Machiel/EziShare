@@ -19,11 +19,38 @@ public class EziInfo implements Serializable {
     private String checkSum = "";
     private ArrayList<File> files;
 
-    protected EziInfo(long size, String eziId,File file) {
+    protected EziInfo(long size, File file) {
         this.fileSize = size;
-        this.eziId = eziId;
+        this.eziId = generateEziId(file);
         this.files = new ArrayList<>();
         this.files.add(file);
+    }
+    
+    private String generateEziId(File file) {
+
+        String eziId = null;
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //Using MessageDigest update() method to provide input
+            byte[] buffer = new byte[4096];
+            int numOfBytesRead;
+            long step = 0;
+            while ((numOfBytesRead = fis.read(buffer)) > 0) {
+                fis.skip(step * 1024);
+                md.update(buffer, 0, numOfBytesRead);
+                step++;
+            }
+            byte[] hash = md.digest();
+            eziId = new BigInteger(1, hash).toString(16); //don't use this, truncates leading zero
+            fis.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException | IOException ex) {
+            Logger.getLogger(EziInfoIndexer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return eziId;
     }
     
     protected void checkFiles(){
@@ -31,6 +58,11 @@ public class EziInfo implements Serializable {
         for(File file : files){
             if(!file.exists()){
                 removeFile(file);
+            }
+            else{
+                if(!eziId.equals(generateEziId(file))){
+                    removeFile(file);
+                }
             }
         }
     }

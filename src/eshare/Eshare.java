@@ -24,16 +24,9 @@ public class Eshare {
         System.out.println(shareFolder.getSelectedFile().getPath());
         String shareDirectory = shareFolder.getSelectedFile().getPath();
         
-        //JOptionPane.showMessageDialog(frame, "Choose your directory to download into.");
-        JFileChooser downloadFolder = new JFileChooser();
-        downloadFolder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        Integer opt2 = downloadFolder.showDialog(downloadFolder, "choose");
-        System.out.println(downloadFolder.getSelectedFile().getPath());
-        String downloadDirectory = downloadFolder.getSelectedFile().getPath();
-        
         frame.dispose();
         
-        EziClient client = new EziClient(new File(shareDirectory), new File(downloadDirectory));
+        EziClient client = new EziClient(new File(shareDirectory), new File(shareDirectory));
         client.start();
     }
 }

@@ -23,6 +23,7 @@ public class EziPeer implements Serializable {
         this.distributor = distributor;
         this.listener = new EziPeerListener(this, distributor);
         this.listener.startListening();
+        System.out.println("a");
     }
     
     protected void stop(){
