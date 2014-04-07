@@ -11,8 +11,6 @@ public class EziDownload {
     //--
     protected EziInfo eziFile;
     private ArrayList<EziPeer> peers;
-    private int partCounter = 1;
-    //--
     private String path;
     private int packetSize;
     private int partSize;
@@ -25,7 +23,6 @@ public class EziDownload {
     }
 
     protected void requestNextPart(EziPeer p) {
-        partCounter++;
         //parts.add(new EziFileIndexer(partCounter, getEziFile().getFileName(), path, packetSize, partSize));
        // p.writeObject(new EziPacketRequest(getEziFile().getFileName(), partCounter, packetSize));
     }
@@ -40,19 +37,13 @@ public class EziDownload {
     }
 
     public void delete() {
-    }
-    
-    
+    }  
 
-    public void processFilePacket(EziDataPacket packet, EziPeer p) {
+    public void processDataPacket(EziDataPacket packet, EziPeer p) {
         
     }
-
-    public EziInfo getEziFile() {
-        return eziFile;
-    }
-
-    public void setEziFile(EziInfo eziFile) {
-        this.eziFile = eziFile;
+    
+    public String getCheckSum(){
+        return eziFile.getCheckSum();
     }
 }

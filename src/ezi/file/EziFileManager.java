@@ -20,24 +20,22 @@ public class EziFileManager {
 
     private String fileName;
     private String filePath;
-    private String checkSum;
     private long fileSize;
     private File file;
     private EziFileWriter writer;
     private EziFileReader reader;
 
-    public EziFileManager(String filePath, String fileName, long fileSize, String checkSum) {
+    public EziFileManager(String filePath, String fileName, long fileSize) {
         this.fileName = fileName;
         this.filePath = filePath;
         this.fileSize = fileSize;
-        this.checkSum = checkSum;
         initFile(filePath, fileName);
         this.writer = new EziFileWriter(this.file, fileSize);
         this.reader = new EziFileReader(this.file);
     }
 
     private void initFile(String filePath, String fileName) {
-        this.file = new File(filePath+"\\"+fileName);
+        this.file = new File(filePath + "\\" + fileName);
         if (!this.file.exists()) {
             try {
                 this.file.createNewFile();
@@ -52,8 +50,6 @@ public class EziFileManager {
     }
 
     public void writePacket(EziDataPacket d) {
-        if (d.getCheckSum().equals(checkSum)) {
-            this.writer.writePacket(d);
-        }
+        this.writer.writePacket(d);
     }
 }

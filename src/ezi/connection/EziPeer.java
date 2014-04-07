@@ -5,15 +5,8 @@
 package ezi.connection;
 
 import ezi.system.EziDistributor;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,54 +15,25 @@ import java.util.logging.Logger;
 public class EziPeer implements Serializable {
     
     private Socket socket;
-    private InputStream inStr;
-    private OutputStream outStr;
-    private ObjectInputStream objectInStr;
-    private ObjectOutputStream objectOutStr;
     private EziPeerListener listener;
+    private EziDistributor distributor;
 
-    protected EziPeer(Socket socket, EziDistributor processor) {
+    protected EziPeer(Socket socket, EziDistributor distributor) {
         this.socket = socket;
-        this.listener = new EziPeerListener(this, processor);
-        createStreams();
-        createObjectStreams();
+        this.distributor = distributor;
+        this.listener = new EziPeerListener(this, distributor);
+        this.listener.startListening();
     }
     
-    private void createStreams(){
-        try {
-            inStr = socket.getInputStream();
-            outStr = socket.getOutputStream();
-        } catch (Exception ex) {
-            Logger.getLogger(EziPeer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void createObjectStreams() {
-        try {
-            objectOutStr = new ObjectOutputStream(outStr);
-            objectOutStr.flush();
-            objectInStr = new ObjectInputStream(inStr);
-        } catch (Exception ex) {
-            Logger.getLogger(EziPeer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    protected void stop(){
+        listener.stopListening();
     }
     
-    protected Object readObject(){
-        Object ob = null;
-        try {
-            ob = objectInStr.readObject();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(EziPeer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return ob;
+    protected Socket getSocket(){
+        return this.socket;
     }
-
-    public void writeObject(Object ob){
-        try {
-            objectOutStr.writeObject(ob);
-            objectOutStr.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(EziPeer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    
+    public void sendObject(Object ob){
+        listener.writeObject(ob);
     }
 }

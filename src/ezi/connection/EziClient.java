@@ -7,6 +7,8 @@ package ezi.connection;
 import ezi.system.EziUpload;
 import ezi.system.EziDistributor;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,18 +19,17 @@ import java.util.logging.Logger;
  *
  * @author Elwin
  */
-public final class Connection implements Runnable {
+public final class EziClient implements Runnable {
 
     private ServerSocket serverSocket;
-    private EziDistributor processor;
+    private EziDistributor distributor;
     private ArrayList<EziPeer> peers;
     private Thread thread;
     private boolean run = true;
-    
 
-    public Connection(EziDistributor processor) {
+    public EziClient() {
+        this.distributor = new EziDistributor();
         this.peers = new ArrayList<>();
-        this.processor = processor;
         try {
             serverSocket = new ServerSocket(4545);
         } catch (IOException ex) {
@@ -38,7 +39,20 @@ public final class Connection implements Runnable {
 
     public void stop() {
         run = false;
-        thread = null;
+        for(EziPeer p: peers){
+            p.stop();
+        }
+        try {
+            thread.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(EziClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            serverSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(EziClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Client: stopped");
     }
 
     public void start() {
@@ -51,8 +65,19 @@ public final class Connection implements Runnable {
         try {
             Socket socket;
             socket = serverSocket.accept();
-            EziPeer peer = new EziPeer(socket, processor);
-            peers.add(peer);
+            boolean equal = false;
+            for (EziPeer p : peers) {
+                if (p.getSocket().getInetAddress().equals(socket.getInetAddress())) {
+                    equal = true;
+                    break;
+                }
+            }
+            
+            if (!equal && !(socket.getInetAddress().toString().equals(socket.getLocalAddress().toString()) )) {                
+                EziPeer peer = new EziPeer(socket, distributor);
+                peers.add(peer);
+                System.out.println("Client: Accepted: " + socket.getInetAddress().toString());
+            }
         } catch (IOException ex) {
             Logger.getLogger(EziUpload.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,10 +89,9 @@ public final class Connection implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Connection: serversocket listening");
+        System.out.println("Client: listening");
         while (run) {
             acceptSocket();
         }
-        System.out.println("Connection: serversocket stopped listening");
     }
 }
