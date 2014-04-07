@@ -24,22 +24,26 @@ import java.util.logging.Logger;
  */
 public class EziInfoIndexer {
 
-    private String filesFolder;
-    private String eziFolder;
+    private File filesFolder;
+    private File eziFolder;
     private ArrayList<EziInfo> eziFiles;
 
-    public EziInfoIndexer(String filesFolder, String eziFolder) {
+    public EziInfoIndexer(File filesFolder, File eziFolder) {
         this.filesFolder = filesFolder;
         this.eziFolder = eziFolder;
-        //this.eziFiles = getEziInfoFiles(eziFolder);
-        this.eziFiles = indexFolder(new File(filesFolder), eziFolder, new ArrayList<EziInfo>());
+        this.eziFiles = getExistingEziInfoFiles(eziFolder);
     }
     
     public ArrayList<EziInfo> getEziInfoList(){
         return this.eziFiles;
-    } 
+    }
+    
+    public void refreshList(){
+        System.out.println("Indexer: Indexing files");
+        eziFiles = indexFolder(filesFolder, eziFolder, new ArrayList<EziInfo>());
+    }
 
-    private ArrayList<EziInfo> getEziInfoFiles(File eziFolder) {
+    private ArrayList<EziInfo> getExistingEziInfoFiles(File eziFolder) {
         ArrayList<EziInfo> eziFiles = new ArrayList<>();
         for (File eziFile : eziFolder.listFiles()) {
             if (eziFile.getName().endsWith(".ezi")) {
@@ -52,7 +56,7 @@ public class EziInfoIndexer {
         return eziFiles;
     }
 
-    private ArrayList<EziInfo> indexFolder(File filesFolder, String eziFolder, ArrayList<EziInfo> eziFiles) {
+    private ArrayList<EziInfo> indexFolder(File filesFolder, File eziFolder, ArrayList<EziInfo> eziFiles) {
         try {
             for (File file : filesFolder.listFiles()) {
                 if (file.isDirectory()) {
@@ -92,8 +96,8 @@ public class EziInfoIndexer {
         return eziFiles;
     }
 
-    private String getEziUri(String eziFolder, String eziId) {
-        return eziFolder + "\\" + eziId + ".ezi";
+    private String getEziUri(File eziFolder, String eziId) {
+        return eziFolder.getPath() + "/" + eziId + ".ezi";
     }
 
     private String generateEziId(File file) {
@@ -123,7 +127,7 @@ public class EziInfoIndexer {
         return eziId;
     }
 
-    private EziInfo createEziInfoFile(File file, String eziFolder, String eziId) {
+    private EziInfo createEziInfoFile(File file, File eziFolder, String eziId) {
         FileOutputStream fileOutput = null;
         EziInfo eziInfo = new EziInfo(file.length(), eziId, file);
         File eziFile = new File(getEziUri(eziFolder, eziId));
@@ -155,7 +159,7 @@ public class EziInfoIndexer {
             eziInfo.checkFiles();
 
             if ((eziInfo.getNumberOfFiles() != 0) && (numOfFiles != eziInfo.getNumberOfFiles())) {
-                updateEziInfoFile(eziFile.getPath(), eziInfo);
+                updateEziInfoFile(eziFile, eziInfo);
             }
             if (eziInfo.getNumberOfFiles() == 0) {
                 eziFile.delete();
@@ -167,7 +171,7 @@ public class EziInfoIndexer {
         return eziInfo;
     }
 
-    private void updateEziInfoFile(String eziFolder, EziInfo eziInfo) {
+    private void updateEziInfoFile(File eziFolder, EziInfo eziInfo) {
         FileOutputStream fileOutput = null;
         File writeFile = new File(getEziUri(eziFolder, eziInfo.getEziId()));
         try {

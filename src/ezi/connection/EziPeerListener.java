@@ -5,6 +5,7 @@
 package ezi.connection;
 
 import ezi.system.EziDistributor;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -29,11 +30,13 @@ public class EziPeerListener implements Runnable {
     protected EziPeerListener(EziPeer peer, EziDistributor distributor) {
         this.peer = peer;
         this.distributor = distributor;
+        createObjectStreams();
     }
 
     private void createObjectStreams() {
         try {
             objectOutStr = new ObjectOutputStream(peer.getSocket().getOutputStream());
+            objectOutStr.flush();
             objectInStr = new ObjectInputStream(peer.getSocket().getInputStream());
         } catch (Exception ex) {
             Logger.getLogger(EziPeer.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,6 +47,7 @@ public class EziPeerListener implements Runnable {
         Object ob = null;
         try {
             ob = objectInStr.readObject();
+            System.out.println("Peer: "+ob.getClass().toString()+" recieved");
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(EziPeer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,6 +58,7 @@ public class EziPeerListener implements Runnable {
         try {
             objectOutStr.writeObject(ob);
             objectOutStr.flush();
+            System.out.println("Peer: "+ob.getClass().toString()+" send");
         } catch (IOException ex) {
             Logger.getLogger(EziPeer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,7 +87,6 @@ public class EziPeerListener implements Runnable {
 
     @Override
     public void run() {
-        createObjectStreams();
         while (run) {
             System.out.println("Peer Listener: Listening");
             distributor.processPacket(readObject(), peer);

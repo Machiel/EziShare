@@ -4,8 +4,11 @@
  */
 package ezi.connection;
 
+import ezi.file.EziInfoIndexer;
+import ezi.packet.EziInfoPacket;
 import ezi.system.EziUpload;
 import ezi.system.EziDistributor;
+import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -23,11 +26,17 @@ public final class EziClient implements Runnable {
 
     private ServerSocket serverSocket;
     private EziDistributor distributor;
-    private ArrayList<EziPeer> peers;
+    private EziInfoIndexer indexer;
+    private EziBroadcastClient broadcastClient;
+    private EziBroadCastServer broadcastServer;
+    public ArrayList<EziPeer> peers;
     private Thread thread;
     private boolean run = true;
 
-    public EziClient() {
+    public EziClient(File shareDirectory, File downloadDirectory) {
+        this.indexer = new EziInfoIndexer(shareDirectory, downloadDirectory);
+        this.indexer.refreshList();
+        
         this.distributor = new EziDistributor();
         this.peers = new ArrayList<>();
         try {
@@ -35,30 +44,37 @@ public final class EziClient implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(EziUpload.class.getName()).log(Level.SEVERE, null, ex);
         }
+        broadcastClient = new EziBroadcastClient();
+        broadcastServer = new EziBroadCastServer();
     }
 
     public void stop() {
         run = false;
-        for(EziPeer p: peers){
+        for (EziPeer p : peers) {
             p.stop();
-        }
-        try {
-            thread.join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(EziClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             serverSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(EziClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Client: stopped");
+        try {
+            thread.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(EziClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        broadcastClient.stop();
+        broadcastServer.stop();
+        System.out.println("Client: thread stopped");
     }
 
     public void start() {
         run = true;
         thread = new Thread(this);
         thread.start();
+        broadcastClient.start();
+        broadcastServer.start();
     }
 
     protected void acceptSocket() {
@@ -72,9 +88,10 @@ public final class EziClient implements Runnable {
                     break;
                 }
             }
-            
-            if (!equal && !(socket.getInetAddress().toString().equals(socket.getLocalAddress().toString()) )) {                
+
+            if (!equal && (socket.getInetAddress().toString().equals(socket.getLocalAddress().toString()))) {
                 EziPeer peer = new EziPeer(socket, distributor);
+                peer.sendObject(new EziInfoPacket(indexer.getEziInfoList()));
                 peers.add(peer);
                 System.out.println("Client: Accepted: " + socket.getInetAddress().toString());
             }

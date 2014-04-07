@@ -5,7 +5,9 @@
 package ezi.system;
 
 import ezi.connection.EziPeer;
+import ezi.file.EziInfo;
 import ezi.packet.EziDataPacket;
+import ezi.packet.EziInfoPacket;
 import ezi.packet.EziPacketRequest;
 import ezi.packet.EziPacketResponse;
 import java.util.ArrayList;
@@ -37,6 +39,9 @@ public class EziDistributor {
             case "EziPacketResponse":
                 routeDataResponse((EziPacketResponse) object, p);
                 break;
+            case "EziInfoPacket":
+                routeInfoPacket((EziInfoPacket) object, p);
+                break;
         }
     }
 
@@ -50,10 +55,17 @@ public class EziDistributor {
     }
 
     private void routeDataRequest(EziPacketRequest request, EziPeer p) {
-        
+
+    }
+
+    private void routeDataResponse(EziPacketResponse response, EziPeer p) {
+
     }
     
-    private void routeDataResponse(EziPacketResponse response, EziPeer p) {
-        
+    private void routeInfoPacket(EziInfoPacket response, EziPeer p) {
+        System.out.println("Files:");
+        for(EziInfo ezi : response.getFiles()){
+            System.out.println(ezi.getFileName());
+        }
     }
 }

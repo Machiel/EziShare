@@ -4,11 +4,10 @@
  */
 package eshare;
 
-import ezi.connection.EziBroadcastClient;
-import ezi.connection.EziBroadCastServer;
 import ezi.connection.EziClient;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 
 /**
  *
@@ -17,11 +16,24 @@ import java.util.logging.Logger;
 public class Eshare {
 
     public static void main(String[] args) {
-        EziClient client = new EziClient();
+        JFrame frame = new JFrame();
+        //JOptionPane.showMessageDialog(frame, "Choose a folder to share.");
+        JFileChooser shareFolder = new JFileChooser();
+        shareFolder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        Integer opt = shareFolder.showDialog(shareFolder, "choose");
+        System.out.println(shareFolder.getSelectedFile().getPath());
+        String shareDirectory = shareFolder.getSelectedFile().getPath();
+        
+        //JOptionPane.showMessageDialog(frame, "Choose your directory to download into.");
+        JFileChooser downloadFolder = new JFileChooser();
+        downloadFolder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        Integer opt2 = downloadFolder.showDialog(downloadFolder, "choose");
+        System.out.println(downloadFolder.getSelectedFile().getPath());
+        String downloadDirectory = downloadFolder.getSelectedFile().getPath();
+        
+        frame.dispose();
+        
+        EziClient client = new EziClient(new File(shareDirectory), new File(downloadDirectory));
         client.start();
-        EziBroadcastClient c = new EziBroadcastClient();
-        c.start();
-        EziBroadCastServer b = new EziBroadCastServer();
-        b.start();
     }
 }

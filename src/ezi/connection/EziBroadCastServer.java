@@ -53,13 +53,13 @@ public class EziBroadCastServer implements Runnable {
 
     public void stop() {
         run = false;
+        socket.close();
         try {
             thread.join();
         } catch (InterruptedException ex) {
             Logger.getLogger(EziClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-        socket.close();
-        System.out.println("Broadcast Server: stopped");
+        System.out.println("Broadcast Server: Thread stopped");
     }
 
     public void start() {

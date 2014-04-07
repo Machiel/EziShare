@@ -4,10 +4,9 @@
  */
 package ezi.connection;
 
-import java.io.BufferedReader;
+import ezi.system.EziDistributor;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -41,13 +40,13 @@ public class EziBroadcastClient implements Runnable {
 
     public void stop() {
         run = false;
+        socket.close();
         try {
             thread.join();
         } catch (InterruptedException ex) {
             Logger.getLogger(EziClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        socket.close();
-        System.out.println("Broadcast Client: stopped");
+        }        
+        System.out.println("Broadcast Client: Thread stopped");
     }
 
     public void start() {
@@ -64,6 +63,7 @@ public class EziBroadcastClient implements Runnable {
                 System.out.println("Broadcast Client: listening for packets");
                 socket.receive(packet);
                 Socket s = new Socket(packet.getAddress(), 4545);
+                EziPeer p = new EziPeer(s, new EziDistributor());
                 System.out.println("Broadcast Client: packet recieved ");
             } catch (IOException ex) {
                 System.out.println("Broadcast Client-ERROR-: could not recieve packet");
